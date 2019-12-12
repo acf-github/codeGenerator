@@ -1,0 +1,63 @@
+package br.com.bv.crud.model;
+
+import java.util.Date;
+import br.com.bv.crud.model.dto.${planilha.entityName}RequestDTO;
+import br.com.bv.crud.model.dto.${planilha.entityName}ResponseDTO;
+import java.sql.Timestamp;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+/** Entity model for ${planilha.tableName}. */
+@Entity
+@Table(name = ${planilha.tableName})
+@EntityListeners(AuditingEntityListener.class)
+public class ${planilha.entityName} {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer ${planilha.entityName}Id;
+#foreach( ${atributo} in ${planilha.atributoList} )
+	@Column(name = "${atributo.columnName}", nullable = ${atributo.nullAble})
+	private ${atributo.atributeTypeValue} ${atributo.atributeName};
+#end
+	@CreatedDate
+	@Column(name = "created_at", nullable = false, updatable = false)
+	private Timestamp createdAt;
+	@LastModifiedDate
+	@Column(name = "modified_at", nullable = false)
+	private Timestamp modifiedAt;
+	 
+#foreach( ${atributo} in ${planilha.atributoList} )
+	public String get${atributo.atributeNameForGetSet}() {
+  		return ${atributo.atributeName};
+	}
+	
+	public void set${atributo.atributeNameForGetSet}(${atributo.atributeTypeValue} ${atributo.atributeName}) {
+		this.${atributo.atributeName} = ${atributo.atributeName}
+	}
+	
+#end
+	public Timestamp getCreatedAt() {
+    	return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+	
+	public Timestamp getModifiedAt() {
+    	return modifiedAt;
+	}
+
+	public void setModifiedAt(Timestamp modifiedAt) {
+		this.modifiedAt = modifiedAt;
+	}
+}

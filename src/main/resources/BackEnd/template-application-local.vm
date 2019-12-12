@@ -1,0 +1,68 @@
+# Propriedades da aplicação Spring Boot
+spring:
+  main:
+    banner-mode: console
+
+# Configurações da aplicação
+application:
+  backing-services:
+    database:
+      username: sa
+      password:
+      driver-class-name: org.h2.Driver
+      url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+
+# Porta do servidor
+server:
+  port: 8080
+
+# Configurações da biblioteca core
+arsenal:
+  library:
+    core:
+      api:
+        enable-docs: true # Ativar documentação Swagger/OpenAPI
+        docs-base-package: br.com.bv.crud.controller # Pacote onde se encontram as classes de controller
+      auth:
+        enabled: false # Desativar segurança (USE APENAS NO AMBIENTE LOCAL!)
+        #public-key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnzyis1ZjfNB0bBgKFMSvvkTtwlvBsaJq7S5wA+kzeVOVpVWwkWdVha4s38XM/pa/yr47av7+z3VTmvDRyAHcaT92whREFpLv9cj5lTeJSibyr/Mrm/YtjCZVWgaOYIhwrXwKLqPr/11inWsAkfIytvHWTxZYEcXLgAXFuUuaS3uF9gEiNQwzGTU1v0FqkqTBr4B8nW3HCN47XUu0t8Y0e+lf4s4OxQawWD79J9/5d3Ry0vbV3Am1FtGJiJvOwRsIfVChDpYStTcHTCMqtvWbV6L11BWkpzGXSW4Hv43qa+GSYOD2QU68Mb59oSk2OB+BtOLpJofmbGEGgvmwyCI9MwIDAQAB
+        #jwk-set-uri: Endereço de um authorization server (ex: RH SSO), a chave pública é obtida automaticamente
+        #algorithm: Algoritmo de criptografia utilizado para assinar os tokens
+        #actuator-role: Role necessária para acesso aos endpoints do actuator (por padrão permite sempre o acesso)
+        #custom-header: Header onde o token JWT será recebido (padrão: Authorization)
+        #whitelist: Lista de endpoints que não requerem segurança
+        #  - /api/v1/endpoint1/
+        #  - /api/v1/endpoint2/**
+        #role-authorization: Lista de endpoints e roles necessárias para acessá-los
+        #  "[/api/v1/endpoint3/**]"
+        #    - ROLE_ONE
+        #    - ROLE_TWO
+
+# Configurações de banco de dados
+spring.jpa:
+  show-sql: true
+  generate-ddl: true
+  hibernate:
+    ddl-auto: update
+
+spring.datasource:
+  #username: sa
+  #password:
+  #url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+
+# Logging
+# Sobrescrevendo grupos e níveis de log
+logging:
+  group:
+    web: org.springframework.core.codec, org.springframework.http, org.springframework.web
+    spring: org.springframework.core.env
+    servlet: org.springframework.boot.web, org.apache.catalina, org.apache.coyote, org.apache.tomcat
+    data: org.springframework.jdbc.core, org.hibernate.sql, org.springframework.orm.jpa, com.zaxxer.hikari, org.hibernate, org.jooq.tools.LoggerListener
+    app: br.com.santander.crud
+  level:
+    root: WARN
+    spring: INFO
+    app: DEBUG
+    servlet: WARN
+    web: WARN
+    data: INFO

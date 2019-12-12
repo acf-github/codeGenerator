@@ -1,0 +1,84 @@
+# Propriedades da aplicação Spring Boot
+spring:
+  main:
+    banner-mode: 'off'
+  http:
+    encoding:
+      charset: @project.build.sourceEncoding@
+  application:
+    name: "@project.name@"
+    version: "@project.version@"
+    description: "@project.description@"
+
+# Configurações da aplicação
+application:
+  backing-services:
+    database:
+      username: ${DATABASE_USERNAME}
+      password: ${DATABASE_PASSWORD}
+      url: ${DATABASE_URL}
+      driver-class-name: org.h2.Driver
+
+# Dados exibidos no endpoint "info" do Actuator
+info:
+  app:
+    groupId: "@project.groupId@"
+    artifactId: "@project.artifactId@"
+    version: "@project.version@"
+    java.version: "@java.version@"
+
+# Porta do servidor
+server:
+  port: ${PORT}
+
+# Configurações da biblioteca
+arsenal:
+  library:
+    core:
+      api:
+        enable-docs: false # Desativar documentação Swagger/OpenAPI
+        docs-base-package: br.com.bv.crud.controller # Pacote onde se encontram as classes de controller
+      auth:
+        enabled: true # Ativar segurança (autenticação e autorização)
+        #public-key: Chave pública utilizada para validar os tokens JWT
+        #jwk-set-uri: Endereço de um authorization server (ex: RH SSO), a chave pública é obtida automaticamente
+        #algorithm: Algoritmo de criptografia utilizado para assinar os tokens
+        #actuator-role: Role necessária para acesso aos endpoints do actuator (por padrão permite sempre o acesso)
+        #custom-header: Header onde o token JWT será recebido (padrão: Authorization)
+        #whitelist: Lista de endpoints que não requerem segurança
+        #  - /api/v1/endpoint1/
+        #  - /api/v1/endpoint2/**
+        #role-authorization: Lista de endpoints e roles necessárias para acessá-los
+        #  "[/api/v1/endpoint3/**]"
+        #    - ROLE_ONE
+        #    - ROLE_TWO
+
+# Configurações de banco de dados
+spring.jpa:
+  database: H2
+  generate-ddl: false
+  show-sql: false
+  hibernate:
+    ddl-auto: none
+  properties:
+    hibernate:
+      dialect: org.hibernate.dialect.H2Dialect
+
+spring.datasource:
+  continue-on-error: false
+  # A conexão com o banco pode ser feita automaticamente se as propriedades de usuário/senha
+  # estiverem configuradas diretamente nas variáveis de ambiente declaradas abaixo.
+  #
+  # No entanto, recomendamos que você guarde essas credenciais em Secrets do OpenShift.
+  #
+  # Ao usar Secrets, as variáveis de ambiente passam a contar o caminho para os arquivos de secret.
+  #
+  # O Spring Boot não "sabe" abrir os arquivos de Secret e ler o conteúdo dos mesmos, por esse motivo
+  # usamos um DataSource customizado (veja a classe DatabaseConfig) que faz esse processo.
+  #
+  # Veja as configurações de credenciais mais acima na seção application.backing-services.database.
+  platform: h2
+  #driver-class-name: org.h2.Driver
+  #username: ${DATABASE_USER}
+  #password: ${DATABASE_PASSWORD}
+  #url: ${DATABASE_URL}
