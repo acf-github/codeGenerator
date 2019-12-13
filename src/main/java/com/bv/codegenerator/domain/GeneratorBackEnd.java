@@ -16,7 +16,7 @@ public class GeneratorBackEnd implements Generate {
 
 	private static GeneratorBackEnd instance;
 	private static final String URL_RESOURCE = "/src/main/resources/BackEnd/";
-	private static final String URL_DESTINO = "C:/Users/a.cernuda.fernandez/Desktop/Generated/";
+	private static final String URL_DESTINO = System.getProperty("user.home") + "/Desktop/Generated/";
 
 	public static GeneratorBackEnd getInstance() {
 		return instance == null ? new GeneratorBackEnd() : instance;

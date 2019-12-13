@@ -32,7 +32,8 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 		try {
 
 			File excelFile = new File(
-					"C:/Users/a.cernuda.fernandez/Desktop/Code-Generator/src/main/resources/CustomerExample.xlsx");
+					System.getProperty("user.home")
+					+ "/Desktop/Code-Generator/src/main/resources/CustomerExample.xlsx");
 			FileInputStream fis = new FileInputStream(excelFile);
 			Workbook wb = WorkbookFactory.create(fis);
 
