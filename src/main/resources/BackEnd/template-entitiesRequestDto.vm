@@ -1,0 +1,20 @@
+package br.com.bv.crud.model.dto;
+
+import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+/** Data Transfer Object (DTO) representing customer requests. */
+public class ${planilha.entityName}RequestDTO {
+
+  /**
+   * Builder for the class.
+   *
+   */
+   
+@JsonCreator
+public ${planilha.entityName}RequestDTO( ${planilha.requestDtoConstrutor} ) {}
+ 
+}

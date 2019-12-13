@@ -8,10 +8,25 @@ public class PlanilhaRepresentation {
 	private String entityName;
 	private String tableName;
 	private List<AtributosPlanilha> atributoList;
-	
+
 	public PlanilhaRepresentation(String entityName) {
 		this.entityName = entityName;
-		this.atributoList = new  ArrayList<AtributosPlanilha>();
+		this.atributoList = new ArrayList<AtributosPlanilha>();
+	}
+
+	public String getRequestDtoConstrutor() {
+		String retorno = "";
+
+		for (AtributosPlanilha atributosPlanilha : atributoList) {
+
+			retorno = retorno + "@JsonProperty(\"" + atributosPlanilha.getAtributeName() + "\")"
+					+ atributosPlanilha.getAtributeTypeValue() + " " + atributosPlanilha.getAtributeName() + ",";
+		}
+		return retorno;
+	}
+	
+	public String getNomeTeste() {
+		return "testeNome";
 	}
 
 	public String getEntityName() {

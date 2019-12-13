@@ -19,7 +19,10 @@ public class GeneratorBackEnd implements Generate {
 	private static final String URL_DESTINO = "C:/Users/a.cernuda.fernandez/Desktop/Generated/";
 
 	public static GeneratorBackEnd getInstance() {
-		return instance == null ? new GeneratorBackEnd() : instance;
+		if (instance == null) {
+			instance = new GeneratorBackEnd();
+		}
+		return instance;
 	}
 
 	@Override
@@ -27,11 +30,99 @@ public class GeneratorBackEnd implements Generate {
 
 		List<File> retorno = new ArrayList<File>();
 
+		generateStructure();
+
+		retorno.add(generatePom(velocity));
+		retorno.add(generateReadMe(velocity));
 		retorno.add(generateApplication(velocity));
 		retorno.add(generateApplicationLocal(velocity));
 		retorno.addAll(generateEntities(velocity, planilhaList));
+		retorno.addAll(generateEntitiesDto(velocity, planilhaList));
 
 		return retorno;
+	}
+
+	private Collection<? extends File> generateEntitiesDto(VelocityEngine velocity,
+			Collection<PlanilhaRepresentation> planilhaList) {
+
+		List<File> retorno = new ArrayList<File>();
+		Template t = velocity.getTemplate(URL_RESOURCE + "template-entitiesRequestDto.vm");
+
+		for (PlanilhaRepresentation planilha : planilhaList) {
+
+			VelocityContext context = new VelocityContext();
+			context.put("planilha", planilha);
+
+			StringWriter writer = new StringWriter();
+			t.merge(context, writer);
+
+			File arquivo = new File(
+					URL_DESTINO + "src/main/java/br/com/bv/crud/model/dto/" + planilha.getEntityName() + "Dto.java");
+			retorno.add(arquivo);
+			FileWriter fileWriter = null;
+			try {
+				fileWriter = new FileWriter(arquivo);
+				fileWriter.write(writer.toString());
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					fileWriter.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return retorno;
+	}
+
+	private File generateReadMe(VelocityEngine velocity) {
+		VelocityContext context = new VelocityContext();
+		Template t = velocity.getTemplate(URL_RESOURCE + "template-readme.vm");
+
+		StringWriter writer = new StringWriter();
+		t.merge(context, writer);
+
+		File arquivo = new File(URL_DESTINO + "README.md");
+		FileWriter fileWriter = null;
+		try {
+			fileWriter = new FileWriter(arquivo);
+			fileWriter.write(writer.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				fileWriter.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return arquivo;
+	}
+
+	private File generatePom(VelocityEngine velocity) {
+		VelocityContext context = new VelocityContext();
+		Template t = velocity.getTemplate(URL_RESOURCE + "template-pom.vm");
+
+		StringWriter writer = new StringWriter();
+		t.merge(context, writer);
+
+		File arquivo = new File(URL_DESTINO + "pom.xml");
+		FileWriter fileWriter = null;
+		try {
+			fileWriter = new FileWriter(arquivo);
+			fileWriter.write(writer.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				fileWriter.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return arquivo;
 	}
 
 	private File generateApplication(VelocityEngine velocity) {
@@ -58,7 +149,7 @@ public class GeneratorBackEnd implements Generate {
 		}
 		return arquivo;
 	}
-	
+
 	private File generateApplicationLocal(VelocityEngine velocity) {
 
 		VelocityContext context = new VelocityContext();
@@ -116,5 +207,12 @@ public class GeneratorBackEnd implements Generate {
 		}
 
 		return retorno;
+	}
+
+	private void generateStructure() {
+		File resources = new File(URL_DESTINO + "src/main/resources/");
+		File model = new File(URL_DESTINO + "src/main/java/br/com/bv/crud/model/dto");
+		resources.mkdirs();
+		model.mkdirs();
 	}
 }
